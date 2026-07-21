@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   app:
     container_name: galileo-legacy
@@ -7,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
+    image: galileo-legacy-app
 
     restart: unless-stopped
 
@@ -16,7 +16,7 @@ services:
     environment:
       TZ: America/Asuncion
 
-      JAVA_OPTS: >
+      JAVA_OPTS: >-
         -Xms512m
         -Xmx1024m
         -XX:+UseG1GC
@@ -30,6 +30,7 @@ services:
       interval: 15s
       timeout: 10s
       retries: 10
-      start_period: 30s
+      start_period: 40s
+
 volumes:
   tomcat_logs:
