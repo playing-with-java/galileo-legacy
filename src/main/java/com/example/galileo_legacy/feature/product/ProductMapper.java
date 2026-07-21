@@ -13,11 +13,11 @@ public class ProductMapper {
         }
 
         return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
+            .id(product.getId())
+            .name(product.getName())
+            .description(product.getDescription())
+            .price(product.getPrice())
+            .build();
     }
 
     public Product toEntity(ProductRequest request) {
@@ -26,9 +26,9 @@ public class ProductMapper {
         }
 
         return Product.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .price(request.getPrice())
-                .build();
+            .name(request.getName())
+            .description(request.getDescription())
+            .price(request.getPrice())
+            .build();
     }
 }

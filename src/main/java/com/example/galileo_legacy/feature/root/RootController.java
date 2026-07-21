@@ -20,7 +20,7 @@ public class RootController {
                 + "</body></html>";
 
         return ResponseEntity.ok()
-                .contentType(MediaType.TEXT_HTML)
-                .body(body);
+            .contentType(MediaType.TEXT_HTML)
+            .body(body);
     }
 }
