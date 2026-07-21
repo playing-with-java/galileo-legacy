@@ -42,6 +42,19 @@ Aplicación web Java basada en Spring MVC y Spring Data JPA para exponer una API
 - `PUT /api/users/{id}`
 - `DELETE /api/users/{id}`
 
+## Documentación Swagger
+
+La API ahora incluye documentación Swagger generada automáticamente con Springfox.
+
+### Acceso a la documentación
+
+Una vez levantada la aplicación, puedes abrir:
+
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- JSON de la API: http://localhost:8080/v2/api-docs
+
+La documentación incluye los endpoints de productos y usuarios, así como sus parámetros, respuestas y códigos HTTP esperados.
+
 ## Ejecución local
 
 Desde la raíz del proyecto:
