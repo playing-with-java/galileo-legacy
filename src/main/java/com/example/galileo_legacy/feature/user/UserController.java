@@ -15,35 +15,37 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService service;
+    private final UserMapper mapper;
 
     @Autowired
-    public UserController(UserService service) {
+    public UserController(UserService service, UserMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         List<UserResponse> users = service.listAll().stream()
-                .map(this::toResponse)
+                .map(mapper::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(toResponse(service.getById(id)));
+        return ResponseEntity.ok(mapper.toResponse(service.getById(id)));
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
-        User created = service.create(toEntity(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(created));
+        User created = service.create(mapper.toEntity(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponse(created));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
-        User updated = service.update(id, toEntity(request));
-        return ResponseEntity.ok(toResponse(updated));
+        User updated = service.update(id, mapper.toEntity(request));
+        return ResponseEntity.ok(mapper.toResponse(updated));
     }
 
     @DeleteMapping("/{id}")
@@ -52,22 +54,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    private UserResponse toResponse(User user) {
-        return UserResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .build();
-    }
-
-    private User toEntity(UserRequest request) {
-        return User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .build();
-    }
 }

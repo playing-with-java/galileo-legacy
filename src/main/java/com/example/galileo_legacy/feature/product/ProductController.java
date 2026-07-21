@@ -15,35 +15,37 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private final ProductService service;
+    private final ProductMapper mapper;
 
     @Autowired
-    public ProductController(ProductService service) {
+    public ProductController(ProductService service, ProductMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         List<ProductResponse> products = service.listAll().stream()
-                .map(this::toResponse)
+                .map(mapper::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long id) {
-        return ResponseEntity.ok(toResponse(service.getById(id)));
+        return ResponseEntity.ok(mapper.toResponse(service.getById(id)));
     }
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request) {
-        Product created = service.create(toEntity(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(created));
+        Product created = service.create(mapper.toEntity(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponse(created));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
-        Product updated = service.update(id, toEntity(request));
-        return ResponseEntity.ok(toResponse(updated));
+        Product updated = service.update(id, mapper.toEntity(request));
+        return ResponseEntity.ok(mapper.toResponse(updated));
     }
 
     @DeleteMapping("/{id}")
@@ -52,20 +54,4 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    private ProductResponse toResponse(Product product) {
-        return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
-    }
-
-    private Product toEntity(ProductRequest request) {
-        return Product.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .price(request.getPrice())
-                .build();
-    }
 }
