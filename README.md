@@ -1,89 +1,103 @@
-# Galileo legacy
+# Galileo Legacy
 
-Proyecto Spring Boot de ejemplo que provee una API REST para gestionar usuarios y productos.
+Aplicación web Java basada en Spring MVC y Spring Data JPA para exponer una API REST simple para gestionar usuarios y productos.
 
-## Características
-
-- API REST basada en Spring Web MVC
-- Persistencia con Spring Data JPA
-- Base de datos en memoria H2
-- Validación de peticiones con Jakarta Validation
-- Documentación OpenAPI / Swagger UI
-- Autenticación y control de acceso con JWT y Spring Security
-- Listados paginados con `page`, `size` y `sort`
-- Respuestas desacopladas de las entidades JPA mediante DTOs
-
-## Endpoints principales
-
-Auth:
-- `POST /api/auth/login` - Autenticación con correo y contraseña, devuelve token JWT
-- `POST /api/auth/logout` - Invalida el token JWT actual
-
-Usuarios:
-- `GET /api/users` (paginado) - Requiere token Bearer con rol `ADMIN`
-- `GET /api/users/{id}` - Requiere token Bearer con rol `ADMIN`
-- `POST /api/users` - Requiere token Bearer con rol `ADMIN`
-- `PUT /api/users/{id}` - Requiere token Bearer con rol `ADMIN`
-- `DELETE /api/users/{id}` - Requiere token Bearer con rol `ADMIN`
-
-Productos:
-- `GET /api/products` (paginado) - Requiere token Bearer válido
-- `GET /api/products/{id}` - Requiere token Bearer válido
-- `POST /api/products` - Requiere token Bearer válido
-- `PUT /api/products/{id}` - Requiere token Bearer válido
-- `DELETE /api/products/{id}` - Requiere token Bearer válido
-
-## Requisitos
+## Stack técnico
 
 - Java 8
+- Spring Framework 5.3.x
+- Spring Web MVC
+- Spring Data JPA
+- Hibernate 5.4
+- H2 Database en memoria
+- Lombok
 - Maven
+- JUnit 4 + Mockito para pruebas unitarias
+- Checkstyle
 
-## Ejecución
+## Estructura principal
+
+- Configuración Spring: [src/main/java/com/example/galileo_legacy/config](src/main/java/com/example/galileo_legacy/config)
+- Controladores: [src/main/java/com/example/galileo_legacy/feature](src/main/java/com/example/galileo_legacy/feature)
+- Entidades y DTOs: [src/main/java/com/example/galileo_legacy/feature](src/main/java/com/example/galileo_legacy/feature)
+- Pruebas: [src/test/java](src/test/java)
+- Configuración de Checkstyle: [config/checkstyle/checkstyle.xml](config/checkstyle/checkstyle.xml)
+
+## Endpoints disponibles
+
+### Raíz
+- `GET /` → devuelve una respuesta HTML simple indicando que la API está activa.
+
+### Productos
+- `GET /api/products`
+- `GET /api/products/{id}`
+- `POST /api/products`
+- `PUT /api/products/{id}`
+- `DELETE /api/products/{id}`
+
+### Usuarios
+- `GET /api/users`
+- `GET /api/users/{id}`
+- `POST /api/users`
+- `PUT /api/users/{id}`
+- `DELETE /api/users/{id}`
+
+## Ejecución local
 
 Desde la raíz del proyecto:
 
 ```bash
-./mvnw spring-boot:run
+mvn clean package
 ```
 
-Luego abrir:
+Y luego, si se desea ejecutar con el plugin de Jetty:
 
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
-- H2 Console: `http://localhost:8080/h2-console`
+```bash
+mvn jetty:run
+```
+
+La aplicación queda disponible en:
+- http://localhost:8080/
+
+## Ejecución con Docker
+
+Se incluye un archivo de Docker Compose para levantar la aplicación:
+
+```bash
+docker compose up --build
+```
+
+La aplicación queda expuesta en el puerto 8081 del host.
 
 ## Configuración
 
-La configuración principal se encuentra en `src/main/resources/application.properties`.
+La configuración principal está en [src/main/resources/application.properties](src/main/resources/application.properties).
 
-- Base de datos H2 en memoria: `jdbc:h2:mem:copilotdb`
-- JPA DDL automático: `spring.jpa.hibernate.ddl-auto=update`
-- Ruta de Swagger: `/swagger-ui.html`
-- Control de acceso JWT token: `security.jwt.secret` y `security.jwt.expiration-ms`
+Valores actuales:
+- DDL automático: `create-drop`
+- Dialecto Hibernate: `org.hibernate.dialect.H2Dialect`
+- SQL mostrado por Hibernate: habilitado
 
-> Para consumir los endpoints protegidos, envía el token en el header `Authorization: Bearer {token}`.
+La configuración JPA y datasource se define en [src/main/java/com/example/galileo_legacy/config/AppConfig.java](src/main/java/com/example/galileo_legacy/config/AppConfig.java).
 
 ## Pruebas
 
-Ejecutar pruebas unitarias y de integración con:
+Ejecutar todas las pruebas:
 
 ```bash
-./mvnw test
+mvn test
 ```
 
-- Las pruebas unitarias se encuentran en `src/test/java`.
-- Antes de enviar cambios, valida que todas las pruebas unitarias pasen con `./mvnw test`.
+El proyecto incluye pruebas unitarias para mappers, services y controllers con JUnit 4 y Mockito.
 
-## Linter / Checkstyle
-
-Este proyecto usa Checkstyle con la configuración en `config/checkstyle/checkstyle.xml`.
-Para validar el estilo, ejecuta:
+## Verificación de estilo
 
 ```bash
-./mvnw clean verify
+mvn checkstyle:check
 ```
 
-O solamente el chequeo de Checkstyle:
+O bien:
 
 ```bash
-./mvnw checkstyle:check
+mvn clean verify
 ```
