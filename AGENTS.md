@@ -1,17 +1,20 @@
 # AGENTS.md
 
 ## Tech Stack
-- Java 8
-- Spring Framework 5.3.x
-- Spring Web MVC
-- Spring Data JPA + Hibernate 5.4
+- Java 21
+- Spring Boot 3.5.x
+- Spring Web MVC (via `spring-boot-starter-web`)
+- Spring Data JPA + Hibernate 6.x (via `spring-boot-starter-data-jpa`)
 - H2 Database in-memory
+- Lombok
+- springdoc-openapi 2.x (Swagger UI / OpenAPI 3)
 - Maven
-- JUnit 4 + Mockito
+- JUnit 5 (Jupiter) + Mockito (via `spring-boot-starter-test`)
+- Checkstyle
 
 ## Commands
 Use these commands exactly as shown:
-- Run locally: `mvn jetty:run`
+- Run locally: `mvn spring-boot:run`
 - Build package: `mvn clean package`
 - Run tests: `mvn test`
 - Checkstyle: `mvn checkstyle:check`
@@ -26,9 +29,14 @@ Use these commands exactly as shown:
 - Keep changes small and readable.
 
 ## Project-specific notes
-- The application exposes REST endpoints under `/api/products` and `/api/users`.
+- The application exposes full CRUD REST endpoints under `/api/products` and `/api/users`.
 - The root endpoint `/` returns a simple HTML page.
-- Persistence is configured in [src/main/java/com/example/galileo_legacy/config/AppConfig.java](src/main/java/com/example/galileo_legacy/config/AppConfig.java) with an in-memory H2 datasource.
+- Persistence is configured in [src/main/resources/application.properties](src/main/resources/application.properties) with an in-memory H2 datasource (`jdbc:h2:mem:galileo`).
+- H2 console is available at `/h2-console` when the app is running.
+- OpenAPI documentation is served at `/swagger-ui/index.html` and `/v3/api-docs`.
+- Virtual threads are enabled (`spring.threads.virtual.enabled=true`).
+- Checkstyle rules are defined in [config/checkstyle/checkstyle.xml](config/checkstyle/checkstyle.xml) and run on the `validate` phase.
+- Docker support is available via [Dockerfile](Dockerfile) (multi-stage build using `eclipse-temurin:21`) and [docker-compose.yml](docker-compose.yml).
 - Tests live under [src/test/java](src/test/java) and should be updated whenever business logic or endpoints change.
 
 ## Workflow rules
