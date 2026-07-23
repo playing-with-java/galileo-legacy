@@ -13,18 +13,18 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Galileo Legacy API")
-                        .description("API REST para gestionar productos y usuarios")
-                        .version("1.0.0")
-                        .termsOfService("Terms of service")
-                        .contact(new Contact()
-                                .name("Galileo Legacy")
-                                .url("https://example.com")
-                                .email("contact@example.com"))
-                        .license(new License()
-                                .name("Apache License 2.0")
-                                .url("https://www.apache.org/licenses/LICENSE-2.0")));
+            .info(new Info()
+                .title("Galileo Legacy API")
+                .description("API REST para gestionar productos y usuarios")
+                .version("1.0.0")
+                .termsOfService("Terms of service")
+                .contact(new Contact()
+                    .name("Galileo Legacy")
+                    .url("https://example.com")
+                    .email("contact@example.com"))
+                .license(new License()
+                    .name("Apache License 2.0")
+                    .url("https://www.apache.org/licenses/LICENSE-2.0")));
     }
 }
 
