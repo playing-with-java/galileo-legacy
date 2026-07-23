@@ -1,23 +1,25 @@
 # Galileo Legacy
 
-Aplicación web Java basada en Spring MVC y Spring Data JPA para exponer una API REST simple para gestionar usuarios y productos.
+Aplicación web Java basada en Spring Boot 3.5 y Spring Data JPA para exponer una API REST simple para gestionar usuarios y productos.
 
 ## Stack técnico
 
-- Java 8
-- Spring Framework 5.3.x
-- Spring Web MVC
-- Spring Data JPA
-- Hibernate 5.4
+- Java 21
+- Spring Boot 3.5.x
+- Spring Web MVC (via spring-boot-starter-web)
+- Spring Data JPA (via spring-boot-starter-data-jpa)
+- Hibernate 6.x
 - H2 Database en memoria
 - Lombok
 - Maven
-- JUnit 4 + Mockito para pruebas unitarias
+- JUnit 5 (Jupiter) + Mockito para pruebas unitarias
+- springdoc-openapi 2.x para documentación Swagger
 - Checkstyle
 
 ## Estructura principal
 
-- Configuración Spring: [src/main/java/com/example/galileo_legacy/config](src/main/java/com/example/galileo_legacy/config)
+- Punto de entrada Spring Boot: [src/main/java/com/example/galileo_legacy/GalileoLegacyApplication.java](src/main/java/com/example/galileo_legacy/GalileoLegacyApplication.java)
+- Configuración Swagger: [src/main/java/com/example/galileo_legacy/config](src/main/java/com/example/galileo_legacy/config)
 - Controladores: [src/main/java/com/example/galileo_legacy/feature](src/main/java/com/example/galileo_legacy/feature)
 - Entidades y DTOs: [src/main/java/com/example/galileo_legacy/feature](src/main/java/com/example/galileo_legacy/feature)
 - Pruebas: [src/test/java](src/test/java)
@@ -44,14 +46,14 @@ Aplicación web Java basada en Spring MVC y Spring Data JPA para exponer una API
 
 ## Documentación Swagger
 
-La API ahora incluye documentación Swagger generada automáticamente con Springfox.
+La API incluye documentación OpenAPI 3 generada con springdoc-openapi.
 
 ### Acceso a la documentación
 
 Una vez levantada la aplicación, puedes abrir:
 
-- Swagger UI: http://localhost:8080/swagger-ui.html
-- JSON de la API: http://localhost:8080/v2/api-docs
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
+- JSON de la API: http://localhost:8080/v3/api-docs
 
 La documentación incluye los endpoints de productos y usuarios, así como sus parámetros, respuestas y códigos HTTP esperados.
 
@@ -63,10 +65,10 @@ Desde la raíz del proyecto:
 mvn clean package
 ```
 
-Y luego, si se desea ejecutar con el plugin de Jetty:
+Y luego, para ejecutar con el plugin de Spring Boot:
 
 ```bash
-mvn jetty:run
+mvn spring-boot:run
 ```
 
 La aplicación queda disponible en:
@@ -90,8 +92,9 @@ Valores actuales:
 - DDL automático: `create-drop`
 - Dialecto Hibernate: `org.hibernate.dialect.H2Dialect`
 - SQL mostrado por Hibernate: habilitado
+- Consola H2: habilitada en `/h2-console`
 
-La configuración JPA y datasource se define en [src/main/java/com/example/galileo_legacy/config/AppConfig.java](src/main/java/com/example/galileo_legacy/config/AppConfig.java).
+La configuración de datasource y JPA se gestiona automáticamente por Spring Boot a partir de las propiedades en `application.properties`.
 
 ## Pruebas
 
@@ -101,7 +104,7 @@ Ejecutar todas las pruebas:
 mvn test
 ```
 
-El proyecto incluye pruebas unitarias para mappers, services y controllers con JUnit 4 y Mockito.
+El proyecto incluye pruebas unitarias para mappers, services y controllers con JUnit 5 y Mockito.
 
 ## Verificación de estilo
 

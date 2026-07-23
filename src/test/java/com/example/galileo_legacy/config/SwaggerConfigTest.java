@@ -1,18 +1,29 @@
 package com.example.galileo_legacy.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.junit.Test;
-import springfox.documentation.spring.web.plugins.Docket;
 
 import static org.junit.Assert.assertNotNull;
 
 public class SwaggerConfigTest {
 
     @Test
-    public void shouldCreateDocketWithApiConfiguration() {
+    public void shouldCreateOpenAPIConfiguration() {
         SwaggerConfig config = new SwaggerConfig();
-        Docket docket = config.api();
+        OpenAPI openAPI = config.openAPI();
 
-        assertNotNull(docket);
-        assertNotNull(docket.getDocumentationType());
+        assertNotNull(openAPI);
+        assertNotNull(openAPI.getInfo());
+    }
+
+    @Test
+    public void shouldHaveCorrectApiTitle() {
+        SwaggerConfig config = new SwaggerConfig();
+        Info info = config.openAPI().getInfo();
+
+        assertNotNull(info);
+        assertNotNull(info.getTitle());
     }
 }
+

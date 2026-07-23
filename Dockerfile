@@ -1,7 +1,7 @@
 # ============================
 # Stage 1 - Build
 # ============================
-FROM maven:3.9.11-eclipse-temurin-8 AS builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
 
 WORKDIR /workspace
 
@@ -14,16 +14,14 @@ RUN mvn clean package -DskipTests
 # ============================
 # Stage 2 - Runtime
 # ============================
-FROM tomcat:9.0-jdk8-temurin
+FROM eclipse-temurin:21-jre-alpine
 
 LABEL maintainer="equipo-dev"
 
-RUN rm -rf /usr/local/tomcat/webapps/*
+WORKDIR /app
 
-COPY --from=builder \
-    /workspace/target/*.war \
-    /usr/local/tomcat/webapps/ROOT.war
+COPY --from=builder /workspace/target/galileo-legacy.jar app.jar
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

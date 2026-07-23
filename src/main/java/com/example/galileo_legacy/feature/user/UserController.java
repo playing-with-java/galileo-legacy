@@ -2,11 +2,11 @@ package com.example.galileo_legacy.feature.user;
 
 import com.example.galileo_legacy.feature.user.dto.UserRequest;
 import com.example.galileo_legacy.feature.user.dto.UserResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
-@Api(tags = "Users", description = "Operations for managing users")
+@Tag(name = "Users", description = "Operations for managing users")
 public class UserController {
 
     private final UserService service;
@@ -30,10 +30,9 @@ public class UserController {
     }
 
     @GetMapping
-    @ApiOperation(value = "List all users", notes = "Returns all available users", response = UserResponse.class,
-            responseContainer = "List")
+    @Operation(summary = "List all users", description = "Returns all available users")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Users returned successfully")
+            @ApiResponse(responseCode = "200", description = "Users returned successfully")
     })
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         List<UserResponse> users = service.listAll().stream()
@@ -43,49 +42,48 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a user by id", notes = "Finds a user by its identifier", response = UserResponse.class)
+    @Operation(summary = "Get a user by id", description = "Finds a user by its identifier")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "User found"),
-            @ApiResponse(code = 404, message = "User not found")
+            @ApiResponse(responseCode = "200", description = "User found"),
+            @ApiResponse(responseCode = "404", description = "User not found")
     })
-    public ResponseEntity<UserResponse> getUser(@ApiParam(value = "User identifier", required = true)
-                                                @PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUser(
+            @Parameter(description = "User identifier", required = true) @PathVariable Long id) {
         return ResponseEntity.ok(mapper.toResponse(service.getById(id)));
     }
 
     @PostMapping
-    @ApiOperation(value = "Create a user", notes = "Creates a new user", response = UserResponse.class)
+    @Operation(summary = "Create a user", description = "Creates a new user")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "User created successfully")
+            @ApiResponse(responseCode = "201", description = "User created successfully")
     })
-    public ResponseEntity<UserResponse> createUser(@ApiParam(value = "User payload", required = true)
-                                                   @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> createUser(
+            @Parameter(description = "User payload", required = true) @RequestBody UserRequest request) {
         User created = service.create(mapper.toEntity(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponse(created));
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update a user", notes = "Updates an existing user", response = UserResponse.class)
+    @Operation(summary = "Update a user", description = "Updates an existing user")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "User updated successfully"),
-            @ApiResponse(code = 404, message = "User not found")
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
     })
-    public ResponseEntity<UserResponse> updateUser(@ApiParam(value = "User identifier", required = true)
-                                                    @PathVariable Long id,
-                                                    @ApiParam(value = "User payload", required = true)
-                                                    @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> updateUser(
+            @Parameter(description = "User identifier", required = true) @PathVariable Long id,
+            @Parameter(description = "User payload", required = true) @RequestBody UserRequest request) {
         User updated = service.update(id, mapper.toEntity(request));
         return ResponseEntity.ok(mapper.toResponse(updated));
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete a user", notes = "Removes a user by its identifier")
+    @Operation(summary = "Delete a user", description = "Removes a user by its identifier")
     @ApiResponses({
-            @ApiResponse(code = 204, message = "User deleted successfully"),
-            @ApiResponse(code = 404, message = "User not found")
+            @ApiResponse(responseCode = "204", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
     })
-    public ResponseEntity<Void> deleteUser(@ApiParam(value = "User identifier", required = true)
-                                           @PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(
+            @Parameter(description = "User identifier", required = true) @PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
