@@ -2,15 +2,15 @@ package com.example.galileo_legacy.feature.user;
 
 import com.example.galileo_legacy.feature.user.dto.UserRequest;
 import com.example.galileo_legacy.feature.user.dto.UserResponse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,7 +21,7 @@ public class UserControllerTest {
     private UserMapper mapper;
     private UserController controller;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         service = mock(UserService.class);
         mapper = mock(UserMapper.class);

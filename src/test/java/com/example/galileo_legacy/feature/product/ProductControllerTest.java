@@ -2,8 +2,8 @@ package com.example.galileo_legacy.feature.product;
 
 import com.example.galileo_legacy.feature.product.dto.ProductRequest;
 import com.example.galileo_legacy.feature.product.dto.ProductResponse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,7 +22,7 @@ public class ProductControllerTest {
     private ProductMapper mapper;
     private ProductController controller;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         service = mock(ProductService.class);
         mapper = mock(ProductMapper.class);

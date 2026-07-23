@@ -2,13 +2,13 @@ package com.example.galileo_legacy.feature.product;
 
 import com.example.galileo_legacy.feature.product.dto.ProductRequest;
 import com.example.galileo_legacy.feature.product.dto.ProductResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ProductMapperTest {
 

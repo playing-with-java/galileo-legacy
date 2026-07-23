@@ -52,13 +52,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Temporary: keep JUnit 4 vintage engine so existing JUnit 4 tests
-             still compile in this step; removed in Step 4 (JUnit 5 migration) -->
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

@@ -1,16 +1,16 @@
 package com.example.galileo_legacy.feature.user;
 
 import com.example.galileo_legacy.exception.ResourceNotFoundException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,7 +20,7 @@ public class UserServiceTest {
     private UserRepository repository;
     private UserService service;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         repository = mock(UserRepository.class);
         service = new UserService(repository);
@@ -76,11 +76,8 @@ public class UserServiceTest {
     public void shouldThrowWhenUserDoesNotExist() {
         when(repository.findById(99L)).thenReturn(Optional.empty());
 
-        try {
-            service.getById(99L);
-            fail("Expected ResourceNotFoundException");
-        } catch (ResourceNotFoundException ex) {
-            assertEquals("User not found with id 99", ex.getMessage());
-        }
+        ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class,
+                () -> service.getById(99L));
+        assertEquals("User not found with id 99", ex.getMessage());
     }
 }
